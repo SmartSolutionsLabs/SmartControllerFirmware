@@ -22,7 +22,7 @@ class BluetoothLowEnergy {
 		BleConnectionListener * connectionListener = nullptr;
 
 	public:
-		BluetoothLowEnergy(const char * name);
+		BluetoothLowEnergy(Application * application);
 
 		static BleMessageListener * bleCallback;
 

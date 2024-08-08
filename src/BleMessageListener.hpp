@@ -4,9 +4,14 @@
 #include <BLEServer.h>
 #include <Arduino.h>
 
+#include "Application.hpp"
+
 class BleMessageListener : public BLECharacteristicCallbacks {
+	private:
+		Application * application = nullptr;
+
 	public:
-		BleMessageListener();
+		BleMessageListener(Application * application);
 
 		void onWrite(BLECharacteristic * pCharacteristic);
 
