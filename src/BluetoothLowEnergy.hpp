@@ -1,6 +1,8 @@
 #ifndef INC_SMART_BLE
 #define INC_SMART_BLE
 
+#ifdef __SMART_APPLICATION_WITH_BLE__
+
 #include "BleMessageListener.hpp"
 #include "BleConnectionListener.hpp"
 
@@ -34,3 +36,5 @@ class BluetoothLowEnergy {
 };
 
 #endif
+
+#endif // About including BLE

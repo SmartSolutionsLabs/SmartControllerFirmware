@@ -1,19 +1,21 @@
+#ifdef __SMART_APPLICATION_WITH_BLE__
+
 #include "BluetoothLowEnergy.hpp"
 
-BleMessageListener * Ble::bleCallback = nullptr;
+BleMessageListener * BluetoothLowEnergy::bleCallback = nullptr;
 
 BLECharacteristic * BluetoothLowEnergy::resCharacteristic = nullptr;
-BLECharacteristic * Ble::reqCharacteristic = nullptr;
-BLECharacteristic * Ble::statusCharacteristic = nullptr;
+BLECharacteristic * BluetoothLowEnergy::reqCharacteristic = nullptr;
+BLECharacteristic * BluetoothLowEnergy::statusCharacteristic = nullptr;
 
 BLEServer * BluetoothLowEnergy::bluetoothServer = nullptr;
 
-BluetoothLowEnergy::BluetoothLowEnergy(const char * name) {
-	this->device.init(name); // name of SSID.
+BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
+	this->device.init(application->getBluetoothName().c_str()); // name in list of search.
 	this->device.setMTU(MTU_SIZE);
 	this->bluetoothServer = this->device.createServer();
 
-	this->connectionListener = new BleConnectionListener();
+	this->connectionListener = new BleConnectionListener(application);
 
 	this->bluetoothServer->setCallbacks(this->connectionListener);
 
@@ -24,9 +26,9 @@ BluetoothLowEnergy::BluetoothLowEnergy(const char * name) {
 		BLECharacteristic::PROPERTY_WRITE
 	);
 
-	BluetoothLowEnergy::bleCallback = new BleMessageListener();
+	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
 
-	BluetoothLowEnergy::reqCharacteristic->setCallbacks(Ble::bleCallback);
+	BluetoothLowEnergy::reqCharacteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
 
 	BluetoothLowEnergy::resCharacteristic = this->dataService->createCharacteristic(
 		BLE_WRITE_UUID,
@@ -46,3 +48,5 @@ BluetoothLowEnergy::BluetoothLowEnergy(const char * name) {
 
 	Serial.print("BT server created\n");
 }
+
+#endif // About including BLE

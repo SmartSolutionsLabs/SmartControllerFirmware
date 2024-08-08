@@ -1,14 +1,16 @@
-#include "BleMessageListener.hpp"
-#include "Ble.hpp"
+#ifdef __SMART_APPLICATION_WITH_BLE__
 
-BleMessageListener::BleMessageListener() {
+#include "BleMessageListener.hpp"
+#include "BluetoothLowEnergy.hpp"
+
+BleMessageListener::BleMessageListener(Application * application) : application(application) {
 }
 
 void BleMessageListener::onWrite(BLECharacteristic * characteristic) {
 	String input(characteristic->getValue().c_str());
 	if (input.length() > 0){
 		Serial.print("\tBleListened\n\t");
-		Hensor::getInstance()->processMessage(input);
+		this->application->processMessage(&input);
 	}
 }
 
@@ -26,3 +28,5 @@ void BleMessageListener::writeLargeText(BLECharacteristic * characteristic, std:
 	characteristic->setValue("|");
 	characteristic->notify();
 }
+
+#endif // About including BLE

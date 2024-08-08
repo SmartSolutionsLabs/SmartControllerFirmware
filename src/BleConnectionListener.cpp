@@ -1,12 +1,17 @@
+#ifdef __SMART_APPLICATION_WITH_BLE__
+
 #include "BleConnectionListener.hpp"
-#include "Hensor.hpp"
+#include "Application.hpp"
+
+BleConnectionListener::BleConnectionListener(Application * application) : application(application) {
+}
 
 void BleConnectionListener::onConnect(BLEServer * bluetoothServer) {
-	Serial.print("\tBle dev. connected\n");
-	Hensor::getInstance()->setBluetoothDeviceConnected(true);
+	this->application->setBluetoothDeviceConnected(true);
 }
 
 void BleConnectionListener::onDisconnect(BLEServer * bluetoothServer) {
-	Serial.print("\tBle dev. disconnected\n");
-	Hensor::getInstance()->setBluetoothDeviceConnected(false);
+	this->application->setBluetoothDeviceConnected(false);
 }
+
+#endif // About including BLE

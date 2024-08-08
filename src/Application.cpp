@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "BluetoothLowEnergy.hpp"
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
 void Application::checkAdvertising() {
@@ -6,7 +7,7 @@ void Application::checkAdvertising() {
 	// disconnecting
 	if (!this->bluetoothDeviceConnected && this->oldBluetoothDeviceConnected) {
 		vTaskDelay(xDelay); // give the bluetooth stack the chance to get things ready
-		Ble::bluetoothServer->startAdvertising(); // restart advertising
+		BluetoothLowEnergy::bluetoothServer->startAdvertising(); // restart advertising
 		Serial.println("restart BT advertising");
 		this->oldBluetoothDeviceConnected = this->bluetoothDeviceConnected;
 	}
@@ -26,7 +27,7 @@ bool Application::getOldBluetoothDeviceConnected() const {
 	return this->oldBluetoothDeviceConnected;
 }
 
-void Controller::setBluetoothDeviceConnected(bool connected) {
+void Application::setBluetoothDeviceConnected(bool connected) {
 	this->bluetoothDeviceConnected = connected;
 }
 
