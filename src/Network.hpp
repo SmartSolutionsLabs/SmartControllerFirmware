@@ -12,8 +12,6 @@
 
 class Network {
 	protected:
-		const char * hostname;
-
 		static Network * network;
 		Network(const char * hostname);
 
@@ -21,7 +19,7 @@ class Network {
 
 	public:
 		void operator=(const Network &) = delete;
-		static Network * getInstance();
+		static Network * getInstance(const char * hostname);
 		Network(Network &other) = delete;
 
 		AsyncWebServer server;

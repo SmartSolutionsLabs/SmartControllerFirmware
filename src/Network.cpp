@@ -6,9 +6,9 @@ uint32_t Network::remainingAttempts;
 
 Network * Network::network = nullptr;
 
-Network * Network::getInstance() {
+Network * Network::getInstance(const char * hostname) {
 	if (network == nullptr) {
-		network = new Network();
+		network = new Network(hostname);
 	}
 
 	return network;
