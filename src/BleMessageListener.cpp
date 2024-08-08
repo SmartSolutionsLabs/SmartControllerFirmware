@@ -24,9 +24,6 @@ void BleMessageListener::writeLargeText(BLECharacteristic * characteristic, std:
 		characteristic->setValue(largeText.substr(i, len));
 		characteristic->notify();
 	}
-
-	characteristic->setValue("|");
-	characteristic->notify();
 }
 
 #endif // About including BLE
