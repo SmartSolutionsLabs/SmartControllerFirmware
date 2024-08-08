@@ -34,4 +34,12 @@ void Application::setBluetoothDeviceConnected(bool connected) {
 void Application::setOldBluetoothDeviceConnected(bool connected) {
 	this->oldBluetoothDeviceConnected = connected;
 }
+
+void Application::setBluetoothName(String bluetoothName, bool persistent){
+	this->deviceBluetoothName = bluetoothName;
+}
+
+String Application::getBluetoothName() const{
+	return this->deviceBluetoothName;
+}
 #endif // About BLE

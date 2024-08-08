@@ -25,6 +25,7 @@ class Application {
 		void setOldBluetoothDeviceConnected(bool connected);
 		void checkAdvertising();
 		String getBluetoothName() const;
+		void setBluetoothName(String bluetoothName, bool persistent = true);
 #endif // About Bluetooth Low Energy
 
 #ifdef __SMART_APPLICATION_WITH_WIFI__
