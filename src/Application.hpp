@@ -10,15 +10,27 @@ class Application {
 		bool oldBluetoothDeviceConnected = false;
 
 		String deviceBluetoothName;
+
+		BluetoothLowEnergy * ble;
 #endif
 
 	public:
+		/**
+		 * All tools needed are created inside.
+		 */
+		Application();
+
 		/**
 		 * Event to handle message that is generally a string.
 		 */
 		virtual void processMessage(void* message) = 0;
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
+		/**
+		 * Initialize things needed for BLE.
+		 */
+		void powerBluetooth();
+
 		bool getBluetoothDeviceConnected() const;
 		bool getOldBluetoothDeviceConnected() const;
 		void setBluetoothDeviceConnected(bool connected);
