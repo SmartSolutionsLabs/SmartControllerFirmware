@@ -1,10 +1,7 @@
 #include "Application.hpp"
+#include "BluetoothLowEnergy.hpp"
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
-void Application::powerBluetooth() {
-	this->ble = new BluetoothLowEnergy(this);
-}
-
 void Application::checkAdvertising() {
 	const static TickType_t xDelay = 500 / portTICK_PERIOD_MS;
 	// disconnecting
