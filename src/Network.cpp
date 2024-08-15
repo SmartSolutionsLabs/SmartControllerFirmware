@@ -2,6 +2,8 @@
 
 #include "Network.hpp"
 
+#include <functional>
+
 String Network::SSID;
 String Network::PASSWORD;
 uint32_t Network::remainingAttempts;
@@ -48,34 +50,6 @@ Network::Network(const char * hostname) : server(80) {
 
 	// Delete old configuration
 	WiFi.disconnect(true);
-
-	WiFi.onEvent(onConnected, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_CONNECTED);
-	WiFi.onEvent(onAddressed, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_GOT_IP);
-	WiFi.onEvent(onDisconnected, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
-}
-
-void Network::onConnected(WiFiEvent_t event, WiFiEventInfo_t info) {
-	Serial.print("WiFi.connected\n");
-}
-
-void Network::onAddressed(WiFiEvent_t event, WiFiEventInfo_t info) {
-	Serial.print("WiFi.addressed: ");
-	Serial.println(WiFi.localIP());
-}
-
-void Network::onDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
-	Serial.print("WiFi.disconnected\n");
-
-	if (Network::SSID == "" || Network::PASSWORD == "") {
-		Serial.print("No net credentials.");
-		return;
-	}
-
-	// Reattempt the connection
-	if (Network::remainingAttempts > 0) {
-		--Network::remainingAttempts;
-		WiFi.begin(Network::SSID, Network::PASSWORD);
-	}
 }
 
 void Network::connect() {

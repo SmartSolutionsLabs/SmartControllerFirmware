@@ -26,12 +26,6 @@ class Network {
 
 		AsyncWebServer server;
 
-		static void onConnected(WiFiEvent_t event, WiFiEventInfo_t info);
-
-		static void onAddressed(WiFiEvent_t event, WiFiEventInfo_t info);
-
-		static void onDisconnected(WiFiEvent_t event, WiFiEventInfo_t info);
-
 		/**
 		 * Call it when change the credentials.
 		 */
