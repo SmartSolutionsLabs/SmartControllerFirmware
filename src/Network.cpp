@@ -1,3 +1,5 @@
+#ifdef __SMART_APPLICATION_WITH_WIFI__
+
 #include "Network.hpp"
 
 String Network::SSID;
@@ -88,3 +90,5 @@ void Network::connect() {
 	// Attempt the connection
 	WiFi.begin(Network::SSID, Network::PASSWORD);
 }
+
+#endif // About including __SMART_APPLICATION_WITH_WIFI__

@@ -1,6 +1,8 @@
 #ifndef INC_SMART_NETWORK
 #define INC_SMART_NETWORK
 
+#ifdef __SMART_APPLICATION_WITH_WIFI__
+
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
@@ -41,3 +43,5 @@ class Network {
 };
 
 #endif
+
+#endif // About including __SMART_APPLICATION_WITH_WIFI__
