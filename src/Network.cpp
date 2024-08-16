@@ -2,8 +2,6 @@
 
 #include "Network.hpp"
 
-#include <functional>
-
 String Network::SSID;
 String Network::PASSWORD;
 uint32_t Network::remainingAttempts;
