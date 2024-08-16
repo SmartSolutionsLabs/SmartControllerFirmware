@@ -10,18 +10,17 @@ uint32_t Network::remainingAttempts;
 
 Network * Network::network = nullptr;
 
-Network * Network::getInstance(const char * hostname) {
+Network * Network::getInstance() {
 	if (network == nullptr) {
-		network = new Network(hostname);
+		network = new Network();
 	}
 
 	return network;
 }
 
-Network::Network(const char * hostname) : server(80) {
+Network::Network() : server(80) {
 	WiFi.mode(WIFI_STA);
 	WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
-	WiFi.setHostname(hostname);
 
 	server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
 		request->send(200, "text/plain", "This is the ESP HTTP server.");

@@ -15,13 +15,13 @@
 class Network {
 	protected:
 		static Network * network;
-		Network(const char * hostname);
+		Network();
 
 		static uint32_t remainingAttempts;
 
 	public:
 		void operator=(const Network &) = delete;
-		static Network * getInstance(const char * hostname);
+		static Network * getInstance();
 		Network(Network &other) = delete;
 
 		AsyncWebServer server;
