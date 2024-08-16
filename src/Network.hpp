@@ -26,6 +26,8 @@ class Network {
 
 		AsyncWebServer server;
 
+		void begin(const char * hostname, bool withOTA);
+
 		/**
 		 * Call it when change the credentials.
 		 */

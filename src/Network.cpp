@@ -19,6 +19,9 @@ Network * Network::getInstance() {
 }
 
 Network::Network() : server(80) {
+}
+
+void Network::begin(const char * hostname, bool withOTA) {
 	WiFi.mode(WIFI_STA);
 	WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
 
@@ -26,24 +29,26 @@ Network::Network() : server(80) {
 		request->send(200, "text/plain", "This is the ESP HTTP server.");
 	});
 
-	// Start AsyncElegantOTA
-	ElegantOTA.begin(&server);
-	ElegantOTA.setAutoReboot(true);
-	ElegantOTA.onStart([]() {
-		Serial.print("OTA update started!\n");
-	});
-	ElegantOTA.onProgress([](size_t current, size_t final) {
-		Serial.printf("OTA progress: %u%%\n", (current * 100) / final);
-	});
-	ElegantOTA.onEnd([](bool success) {
-		if (success) {
-			Serial.println("OTA update completed successfully.");
-		}
-		else {
-			Serial.println("OTA update failed.");
-			// Add failure handling here.
-		}
-	});
+	if (withOTA) {
+		// Start AsyncElegantOTA
+		ElegantOTA.begin(&server);
+		ElegantOTA.setAutoReboot(true);
+		ElegantOTA.onStart([]() {
+			Serial.print("OTA update started!\n");
+		});
+		ElegantOTA.onProgress([](size_t current, size_t final) {
+			Serial.printf("OTA progress: %u%%\n", (current * 100) / final);
+		});
+		ElegantOTA.onEnd([](bool success) {
+			if (success) {
+				Serial.println("OTA update completed successfully.");
+			}
+			else {
+				Serial.println("OTA update failed.");
+				// Add failure handling here.
+			}
+		});
+	}
 
 	server.begin();
 
