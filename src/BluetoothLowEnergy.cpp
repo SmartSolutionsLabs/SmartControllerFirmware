@@ -4,10 +4,6 @@
 
 BleMessageListener * BluetoothLowEnergy::bleCallback = nullptr;
 
-BLECharacteristic * BluetoothLowEnergy::resCharacteristic = nullptr;
-BLECharacteristic * BluetoothLowEnergy::reqCharacteristic = nullptr;
-BLECharacteristic * BluetoothLowEnergy::statusCharacteristic = nullptr;
-
 BLEServer * BluetoothLowEnergy::bluetoothServer = nullptr;
 
 BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
@@ -21,26 +17,14 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 
 	this->dataService = this->bluetoothServer->createService(BLE_SERVICE_UUID);
 
-	this->reqCharacteristic = this->dataService->createCharacteristic(
-		BLE_READ_UUID,
-		BLECharacteristic::PROPERTY_WRITE
-	);
-
 	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
 
-	BluetoothLowEnergy::reqCharacteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
+	application->getBluetoothCharacteristic(0)->setCallbacks(BluetoothLowEnergy::bleCallback);
 
-	BluetoothLowEnergy::resCharacteristic = this->dataService->createCharacteristic(
-		BLE_WRITE_UUID,
-		BLECharacteristic::PROPERTY_NOTIFY
-	);
-	BluetoothLowEnergy::resCharacteristic->addDescriptor(new BLE2902());
-
-	BluetoothLowEnergy::statusCharacteristic = this->dataService->createCharacteristic(
-		BLE_STATUS_UUID,
-		BLECharacteristic::PROPERTY_NOTIFY
-	);
-	BluetoothLowEnergy::statusCharacteristic->addDescriptor(new BLE2902());
+	unsigned int bleCharacteristicsQuantity = application->getBluetoothCharacteristicsQuantity();
+	while (--bleCharacteristicsQuantity > 0) {
+		application->getBluetoothCharacteristic(bleCharacteristicsQuantity)->addDescriptor(new BLE2902());
+	}
 
 	this->dataService->start();
 

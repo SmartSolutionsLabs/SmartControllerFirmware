@@ -2,6 +2,7 @@
 #define INC_SMART_APPLICATION
 
 #include <Arduino.h>
+#include <BLECharacteristic.h>
 
 class Application {
 	protected:
@@ -10,6 +11,9 @@ class Application {
 		bool oldBluetoothDeviceConnected = false;
 
 		String deviceBluetoothName;
+
+		// Pointer to fill it in derived
+		BLECharacteristic * bleCharacteristics = nullptr;
 #endif
 
 	public:
@@ -17,6 +21,8 @@ class Application {
 		 * Event to handle message that is generally a string.
 		 */
 		virtual void processMessage(void* message) = 0;
+
+		virtual ~Application();
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
 		bool getBluetoothDeviceConnected() const;
@@ -26,6 +32,10 @@ class Application {
 		void checkAdvertising();
 		String getBluetoothName() const;
 		void setBluetoothName(String bluetoothName, bool persistent = true);
+
+		virtual void initializeBluetoothCharacteristicsArray() = 0;
+		BLECharacteristic * getBluetoothCharacteristic(unsigned int index) const;
+		size_t getBluetoothCharacteristicsQuantity() const;
 #endif // About Bluetooth Low Energy
 
 #ifdef __SMART_APPLICATION_WITH_WIFI__
