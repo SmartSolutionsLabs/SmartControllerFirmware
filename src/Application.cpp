@@ -56,6 +56,6 @@ BLECharacteristic * Application::getBluetoothCharacteristic(unsigned int index) 
 }
 
 size_t Application::getBluetoothCharacteristicsQuantity() const {
-	return sizeof(this->bleCharacteristics) / sizeof(*this->bleCharacteristics);
+	return this->bluetoothCharacteristicsQuantity;
 }
 #endif // About BLE

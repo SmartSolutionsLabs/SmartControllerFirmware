@@ -14,6 +14,7 @@ class Application {
 
 		// Pointer to fill it in derived
 		BLECharacteristic * bleCharacteristics = nullptr;
+		size_t bluetoothCharacteristicsQuantity = 0;
 #endif
 
 	public:
