@@ -20,11 +20,16 @@ class BluetoothLowEnergy {
 	private:
 		BLEDevice device;
 		BLEService * service = nullptr;
+		BLEServer * server = nullptr;
+
+		Application * application;
 
 	public:
 		BluetoothLowEnergy(Application * application);
 
-		static BLEServer * bluetoothServer;
+		BLEServer * getServer() const;
+
+		void checkAdvertising();
 };
 
 #endif

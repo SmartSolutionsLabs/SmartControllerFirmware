@@ -30,7 +30,6 @@ class Application {
 		bool getOldBluetoothDeviceConnected() const;
 		void setBluetoothDeviceConnected(bool connected);
 		void setOldBluetoothDeviceConnected(bool connected);
-		void checkAdvertising();
 		String getBluetoothName() const;
 		void setBluetoothName(String bluetoothName, bool persistent = true);
 
