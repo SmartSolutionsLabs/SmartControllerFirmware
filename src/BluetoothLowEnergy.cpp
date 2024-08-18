@@ -53,4 +53,16 @@ void BluetoothLowEnergy::checkAdvertising() {
 	}
 }
 
+void BluetoothLowEnergy::sendOut(BLECharacteristic * characteristic, String largeText) {
+	for (int i = 0; i < largeText.length(); i += MTU_SIZE - 3) {
+		int len = MTU_SIZE - 3;
+		if(len > largeText.length() - i) {
+			len = largeText.length() - i;
+		}
+
+		characteristic->setValue(largeText.substring(i, i + len).c_str());
+		characteristic->notify();
+	}
+}
+
 #endif // About including BLE

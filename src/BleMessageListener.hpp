@@ -14,7 +14,5 @@ class BleMessageListener : public BLECharacteristicCallbacks {
 		BleMessageListener(Application * application);
 
 		void onWrite(BLECharacteristic * pCharacteristic);
-
-		void writeLargeText(BLECharacteristic * characteristic, std::string largeText);
 };
 #endif

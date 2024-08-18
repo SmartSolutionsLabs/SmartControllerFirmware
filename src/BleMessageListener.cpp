@@ -13,16 +13,4 @@ void BleMessageListener::onWrite(BLECharacteristic * characteristic) {
 	}
 }
 
-void BleMessageListener::writeLargeText(BLECharacteristic * characteristic, std::string largeText) {
-	for (int i = 0; i < largeText.length(); i += MTU_SIZE - 3) {
-		int len = MTU_SIZE - 3;
-		if(len > largeText.length() - i) {
-			len = largeText.length() - i;
-		}
-
-		characteristic->setValue(largeText.substr(i, len));
-		characteristic->notify();
-	}
-}
-
 #endif // About including BLE

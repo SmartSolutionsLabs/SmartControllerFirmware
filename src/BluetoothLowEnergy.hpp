@@ -32,6 +32,8 @@ class BluetoothLowEnergy {
 		}
 
 		void checkAdvertising();
+
+		static void sendOut(BLECharacteristic * characteristic, String largeText);
 };
 
 #endif
