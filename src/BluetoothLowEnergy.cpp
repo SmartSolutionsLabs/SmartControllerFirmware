@@ -2,8 +2,6 @@
 
 #include "BluetoothLowEnergy.hpp"
 
-BleMessageListener * BluetoothLowEnergy::bleCallback = nullptr;
-
 BLEServer * BluetoothLowEnergy::bluetoothServer = nullptr;
 
 BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
@@ -20,15 +18,13 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 
 	this->service = this->bluetoothServer->createService(BLE_SERVICE_UUID);
 
-	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
-
 	unsigned int bleCharacteristicsIndex = application->getBluetoothCharacteristicsQuantity();
 	while (bleCharacteristicsIndex) {
 		--bleCharacteristicsIndex; // offset from quantity
 		BLECharacteristic * characteristic = application->getBluetoothCharacteristic(bleCharacteristicsIndex);
 
 		if (bleCharacteristicsIndex == 0) { // first element must be to receive data
-			characteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
+			characteristic->setCallbacks(new BleMessageListener(application));
 		}
 
 		this->service->addCharacteristic(characteristic);

@@ -25,8 +25,6 @@ class BluetoothLowEnergy {
 	public:
 		BluetoothLowEnergy(Application * application);
 
-		static BleMessageListener * bleCallback;
-
 		static BLEServer * bluetoothServer;
 };
 
