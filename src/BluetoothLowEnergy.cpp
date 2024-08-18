@@ -30,7 +30,6 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 		if (bleCharacteristicsIndex == 0) { // first element must be to receive data
 			characteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
 		}
-		characteristic->addDescriptor(new BLE2902());
 
 		this->dataService->addCharacteristic(characteristic);
 	}
