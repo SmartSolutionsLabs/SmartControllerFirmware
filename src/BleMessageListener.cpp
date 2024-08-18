@@ -9,7 +9,6 @@ BleMessageListener::BleMessageListener(Application * application) : application(
 void BleMessageListener::onWrite(BLECharacteristic * characteristic) {
 	String input(characteristic->getValue().c_str());
 	if (input.length() > 0){
-		Serial.print("\tBleListened\n\t");
 		this->application->processMessage(&input);
 	}
 }
