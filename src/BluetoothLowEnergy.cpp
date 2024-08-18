@@ -11,6 +11,9 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 	this->device.setMTU(MTU_SIZE);
 	this->bluetoothServer = this->device.createServer();
 
+	// We always need to call it
+	application->initializeBluetoothCharacteristicsArray();
+
 	this->connectionListener = new BleConnectionListener(application);
 
 	this->bluetoothServer->setCallbacks(this->connectionListener);
