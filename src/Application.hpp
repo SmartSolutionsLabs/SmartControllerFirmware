@@ -26,10 +26,18 @@ class Application {
 		virtual ~Application();
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
-		bool getBluetoothDeviceConnected() const;
-		bool getOldBluetoothDeviceConnected() const;
-		void setBluetoothDeviceConnected(bool connected);
-		void setOldBluetoothDeviceConnected(bool connected);
+		inline bool getBluetoothDeviceConnected() const {
+			return bluetoothDeviceConnected;
+		}
+		inline bool getOldBluetoothDeviceConnected() const {
+			return oldBluetoothDeviceConnected;
+		}
+		inline void setBluetoothDeviceConnected(bool connected) {
+			bluetoothDeviceConnected = connected;
+		}
+		inline void setOldBluetoothDeviceConnected(bool connected) {
+			oldBluetoothDeviceConnected = connected;
+		}
 		String getBluetoothName() const;
 		void setBluetoothName(String bluetoothName, bool persistent = true);
 
