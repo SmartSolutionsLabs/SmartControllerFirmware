@@ -19,7 +19,7 @@
 class BluetoothLowEnergy {
 	private:
 		BLEDevice device;
-		BLEService * dataService = nullptr;
+		BLEService * service = nullptr;
 		BleConnectionListener * connectionListener = nullptr;
 
 	public:

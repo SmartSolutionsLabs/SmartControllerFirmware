@@ -18,7 +18,7 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 
 	this->bluetoothServer->setCallbacks(this->connectionListener);
 
-	this->dataService = this->bluetoothServer->createService(BLE_SERVICE_UUID);
+	this->service = this->bluetoothServer->createService(BLE_SERVICE_UUID);
 
 	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
 
@@ -31,10 +31,10 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 			characteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
 		}
 
-		this->dataService->addCharacteristic(characteristic);
+		this->service->addCharacteristic(characteristic);
 	}
 
-	this->dataService->start();
+	this->service->start();
 
 	BluetoothLowEnergy::bluetoothServer->getAdvertising()->start();
 
