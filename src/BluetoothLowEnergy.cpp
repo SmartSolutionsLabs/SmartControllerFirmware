@@ -19,6 +19,7 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 	this->bluetoothServer->setCallbacks(this->connectionListener);
 
 	this->dataService = this->bluetoothServer->createService(BLE_SERVICE_UUID);
+	this->dataService->addCharacteristic(application->getBluetoothCharacteristic(0));
 
 	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
 
@@ -28,6 +29,7 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 	if (bleCharacteristicsQuantity > 0) {
 		while (--bleCharacteristicsQuantity > 0) {
 			application->getBluetoothCharacteristic(bleCharacteristicsQuantity)->addDescriptor(new BLE2902());
+			this->dataService->addCharacteristic(application->getBluetoothCharacteristic(bleCharacteristicsQuantity));
 		}
 	}
 
