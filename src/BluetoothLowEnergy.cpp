@@ -35,10 +35,6 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 	Serial.print("BT server created\n");
 }
 
-BLEServer * BluetoothLowEnergy::getServer() const {
-	return this->server;
-}
-
 void BluetoothLowEnergy::checkAdvertising() {
 	const static TickType_t xDelay = 300 / portTICK_PERIOD_MS;
 

@@ -27,7 +27,9 @@ class BluetoothLowEnergy {
 	public:
 		BluetoothLowEnergy(Application * application);
 
-		BLEServer * getServer() const;
+		BLEServer * getServer() const {
+			return server;
+		}
 
 		void checkAdvertising();
 };
