@@ -19,18 +19,20 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 	this->bluetoothServer->setCallbacks(this->connectionListener);
 
 	this->dataService = this->bluetoothServer->createService(BLE_SERVICE_UUID);
-	this->dataService->addCharacteristic(application->getBluetoothCharacteristic(0));
 
 	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
 
-	application->getBluetoothCharacteristic(0)->setCallbacks(BluetoothLowEnergy::bleCallback);
+	unsigned int bleCharacteristicsIndex = application->getBluetoothCharacteristicsQuantity();
+	while (bleCharacteristicsIndex) {
+		--bleCharacteristicsIndex; // offset from quantity
+		BLECharacteristic * characteristic = application->getBluetoothCharacteristic(bleCharacteristicsIndex);
 
-	unsigned int bleCharacteristicsQuantity = application->getBluetoothCharacteristicsQuantity();
-	if (bleCharacteristicsQuantity > 0) {
-		while (--bleCharacteristicsQuantity > 0) {
-			application->getBluetoothCharacteristic(bleCharacteristicsQuantity)->addDescriptor(new BLE2902());
-			this->dataService->addCharacteristic(application->getBluetoothCharacteristic(bleCharacteristicsQuantity));
+		if (bleCharacteristicsIndex == 0) { // first element must be to receive data
+			characteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
 		}
+		characteristic->addDescriptor(new BLE2902());
+
+		this->dataService->addCharacteristic(characteristic);
 	}
 
 	this->dataService->start();
