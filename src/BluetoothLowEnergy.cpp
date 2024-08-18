@@ -12,9 +12,7 @@ BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
 	// We always need to call it
 	application->initializeBluetoothCharacteristicsArray();
 
-	this->connectionListener = new BleConnectionListener(application);
-
-	this->bluetoothServer->setCallbacks(this->connectionListener);
+	this->bluetoothServer->setCallbacks(new BleConnectionListener(application));
 
 	this->service = this->bluetoothServer->createService(BLE_SERVICE_UUID);
 
