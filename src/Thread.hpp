@@ -22,6 +22,10 @@ class Thread {
 
 		Thread();
 
+		void setTaskCore(int core) {
+			taskCore = core;
+		}
+
 		static void runTask(void* data);
 
 		void start();
