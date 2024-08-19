@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <BLECharacteristic.h>
 
+#include <Module.hpp>
+
 class Application {
 	protected:
 #ifdef __SMART_APPLICATION_WITH_BLE__
@@ -17,6 +19,9 @@ class Application {
 		size_t bluetoothCharacteristicsQuantity = 0;
 #endif
 
+		Module ** modulesPointer = nullptr;
+		size_t modulesPointerQuantity = 0;
+
 	public:
 		/**
 		 * Event to handle message that is generally a string.
@@ -24,6 +29,8 @@ class Application {
 		virtual void processMessage(void* message) = 0;
 
 		virtual ~Application();
+
+		virtual void initializeModulesPointerArray() = 0;
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
 		inline bool getBluetoothDeviceConnected() const {

@@ -7,6 +7,13 @@ Application::~Application() {
 		delete[] this->bleCharacteristics;
 	}
 #endif
+
+	if (this->modulesPointer != nullptr) {
+		while (this->modulesPointerQuantity) {
+			delete this->modulesPointer[--this->modulesPointerQuantity];
+		}
+		delete[] this->modulesPointer;
+	}
 }
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
