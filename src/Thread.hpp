@@ -30,6 +30,10 @@ class Thread {
 
 		void start();
 
+		void suspend();
+
+		void resume();
+
 		/**
 		 * Should not be used because this thread must be perpetual.
 		 */
