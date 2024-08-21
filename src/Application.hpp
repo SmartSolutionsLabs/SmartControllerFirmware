@@ -24,6 +24,11 @@ class Application {
 
 	public:
 		/**
+		 * Set a callback to redirect input towards processMessage().
+		 */
+		void beginSerialPort(HardwareSerial& serial, unsigned long baud = 115200, uint32_t config = SERIAL_8N1, int8_t rxPin = -1, int8_t txPin = -1);
+
+		/**
 		 * Event to handle message that is generally a string.
 		 */
 		virtual void processMessage(void* message) = 0;

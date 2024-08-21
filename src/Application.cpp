@@ -1,6 +1,16 @@
 #include "Application.hpp"
 #include "BluetoothLowEnergy.hpp"
 
+void Application::beginSerialPort(HardwareSerial& serial, unsigned long baud, uint32_t config, int8_t rxPin, int8_t txPin) {
+	serial.begin(baud, config, rxPin, txPin);
+	serial.onReceive([&]() {
+		if (serial.available() > 0) {
+			String input = serial.readString();
+			this->processMessage(&input);
+		}
+	});
+}
+
 Application::~Application() {
 #ifdef __SMART_APPLICATION_WITH_BLE__
 	if (this->bleCharacteristics != nullptr) {
