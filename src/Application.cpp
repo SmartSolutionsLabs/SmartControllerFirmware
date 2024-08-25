@@ -5,7 +5,7 @@ void Application::beginSerialPort(HardwareSerial& serial, unsigned long baud, ui
 	serial.setRxBufferSize(APPLICATION_SERIAL_BUFFER_SIZE);
 	serial.begin(baud, config, rxPin, txPin);
 	serial.onReceive([&]() {
-		static char buffer[APPLICATION_SERIAL_BUFFER_SIZE] = {0};
+		static char buffer[APPLICATION_SERIAL_BUFFER_SIZE + 1] = {0};
 		static unsigned int bufferCharPosition = 0;
 		static char c;
 
@@ -41,7 +41,7 @@ void Application::processSerialBuffer(char buffer[]) {
 	this->processMessage(message);
 
 	// Reset the buffer for next data
-	memset(buffer, 0, APPLICATION_SERIAL_BUFFER_SIZE);
+	memset(buffer, 0, APPLICATION_SERIAL_BUFFER_SIZE + 1);
 }
 
 Application::~Application() {
