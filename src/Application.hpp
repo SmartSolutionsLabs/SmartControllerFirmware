@@ -6,6 +6,10 @@
 
 #include <Module.hpp>
 
+#ifndef APPLICATION_SERIAL_BUFFER_SIZE
+#define APPLICATION_SERIAL_BUFFER_SIZE 8
+#endif
+
 class Application {
 	protected:
 #ifdef __SMART_APPLICATION_WITH_BLE__
@@ -62,6 +66,9 @@ class Application {
 		void getWifiCredentials(String &ssid, String &password) const;
 		void setWifiCredentials(String &ssid, String &password);
 #endif // About WiFi
+
+		private:
+			void processSerialBuffer(char buffer[]);
 };
 
 #endif
