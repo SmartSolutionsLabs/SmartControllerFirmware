@@ -7,10 +7,12 @@ BleMessageListener::BleMessageListener(Application * application) : application(
 }
 
 void BleMessageListener::onWrite(BLECharacteristic * characteristic) {
-	String input(characteristic->getValue().c_str());
-	if (input.length() > 0){
-		this->application->processMessage(&input);
+	String * message = new String(characteristic->getValue().c_str());
+	if (message->length() > 0){
+		this->application->processMessage(message);
+		return;
 	}
+	delete[] message;
 }
 
 #endif // About including BLE
