@@ -7,7 +7,7 @@
 #include <Module.hpp>
 
 #ifndef APPLICATION_SERIAL_BUFFER_SIZE
-#define APPLICATION_SERIAL_BUFFER_SIZE 8
+#define APPLICATION_SERIAL_BUFFER_SIZE 512
 #endif
 
 class Application {
