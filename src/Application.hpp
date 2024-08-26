@@ -35,7 +35,7 @@ class Application {
 		/**
 		 * Event to handle message that is generally a string.
 		 */
-		virtual void processMessage(void* message) = 0;
+		virtual void processMessage(String * message) = 0;
 
 		virtual ~Application();
 
