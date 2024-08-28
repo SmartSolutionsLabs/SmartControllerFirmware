@@ -5,42 +5,42 @@ void Application::beginSerialPort(HardwareSerial& serial, unsigned long baud, ui
 	serial.setRxBufferSize(APPLICATION_SERIAL_BUFFER_SIZE);
 	serial.begin(baud, config, rxPin, txPin);
 	serial.onReceive([&]() {
-		static char buffer[APPLICATION_SERIAL_BUFFER_SIZE] = {0};
+		static unsigned char buffer[APPLICATION_SERIAL_BUFFER_SIZE] = {0};
 		static unsigned int bufferCharPosition = 0;
-		static char c;
+		static unsigned char c;
 
 		while (serial.available() > 0) {
-			c = serial.read();
+			c = (unsigned char) serial.read();
 			if (c != '\n') {
 				buffer[bufferCharPosition] = c; // append each character
 				bufferCharPosition++; // next character position
 
 				// process and reset if buffer is full
 				if (bufferCharPosition >= APPLICATION_SERIAL_BUFFER_SIZE) {
-					this->processSerialBuffer(buffer);
+					this->processSerialBuffer(buffer, bufferCharPosition);
 					bufferCharPosition = 0;
 				}
 			}
 			else {
-				this->processSerialBuffer(buffer);
+				this->processSerialBuffer(buffer, bufferCharPosition);
 				bufferCharPosition = 0;
 			}
 		}
 
 		// process data ramaining
 		if (bufferCharPosition > 0) {
-			this->processSerialBuffer(buffer);
+			this->processSerialBuffer(buffer, bufferCharPosition);
 		}
 
 		bufferCharPosition = 0;
 	});
 }
 
-void Application::processSerialBuffer(char buffer[]) {
-	char * message = new char[APPLICATION_SERIAL_BUFFER_SIZE + 1]; // plus 1 for null terminator
-	memcpy(message, buffer, APPLICATION_SERIAL_BUFFER_SIZE + 1);
+void Application::processSerialBuffer(unsigned char buffer[], size_t length) {
+	unsigned char * message = new unsigned char[length + 1]; // plus 1 for null terminator
+	memcpy(message, buffer, length);
 
-	this->processMessage(message, false);
+	this->processMessage(message, length, false);
 
 	// Reset the buffer for next data
 	memset(buffer, 0, APPLICATION_SERIAL_BUFFER_SIZE);

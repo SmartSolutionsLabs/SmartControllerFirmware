@@ -35,7 +35,7 @@ class Application {
 		/**
 		 * Event to handle message that is generally a string.
 		 */
-		virtual void processMessage(char * message, bool printable) = 0;
+		virtual void processMessage(unsigned char * message, size_t length, bool printable) = 0;
 
 		virtual ~Application();
 
@@ -68,7 +68,7 @@ class Application {
 #endif // About WiFi
 
 		private:
-			void processSerialBuffer(char buffer[]);
+			void processSerialBuffer(unsigned char buffer[], size_t length);
 };
 
 #endif

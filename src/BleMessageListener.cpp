@@ -9,10 +9,10 @@ BleMessageListener::BleMessageListener(Application * application) : application(
 void BleMessageListener::onWrite(BLECharacteristic * characteristic) {
 	unsigned int len = characteristic->getValue().length();
 	if (len > 0) {
-		char * message = new char[len + 1]; // plus 1 for null terminator
+		char * message = new char[++len]; // plus 1 for null terminator
 		memcpy(message, characteristic->getValue().c_str(), len);
 
-		this->application->processMessage(message, true);
+		this->application->processMessage((unsigned char *) message, len, true);
 	}
 }
 
