@@ -39,7 +39,7 @@ class Application {
 
 		virtual ~Application();
 
-		virtual void initializeModulesPointerArray() = 0;
+		virtual void initializeModulesPointerArray(unsigned int quantity) = 0;
 
 #ifdef __SMART_APPLICATION_WITH_BLE__
 		inline bool getBluetoothDeviceConnected() const {
