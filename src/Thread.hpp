@@ -37,7 +37,7 @@ class Thread {
 		/**
 		 * Should not be used because this thread must be perpetual.
 		 */
-		void stop();
+		void kill();
 
 		virtual void run(void* data) = 0; // Make run pure virtual
 };
