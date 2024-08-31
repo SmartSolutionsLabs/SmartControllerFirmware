@@ -12,6 +12,9 @@
 #define MAX_ATTEMPTS_QUANTITY 4
 #endif
 
+/**
+ * Helper class for managing network over WiFi.
+ */
 class Network {
 	protected:
 		static Network * network;
@@ -26,6 +29,9 @@ class Network {
 
 		AsyncWebServer server;
 
+		/**
+		 * Set WiFi mode and starts a HTTP server.
+		 */
 		void begin(const char * hostname, bool withOTA);
 
 		/**
