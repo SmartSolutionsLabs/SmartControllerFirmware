@@ -2,51 +2,67 @@
 
 #include "BluetoothLowEnergy.hpp"
 
-BleMessageListener * BluetoothLowEnergy::bleCallback = nullptr;
-
-BLECharacteristic * BluetoothLowEnergy::resCharacteristic = nullptr;
-BLECharacteristic * BluetoothLowEnergy::reqCharacteristic = nullptr;
-BLECharacteristic * BluetoothLowEnergy::statusCharacteristic = nullptr;
-
-BLEServer * BluetoothLowEnergy::bluetoothServer = nullptr;
-
 BluetoothLowEnergy::BluetoothLowEnergy(Application * application) {
+	this->application = application;
+
 	this->device.init(application->getBluetoothName().c_str()); // name in list of search.
 	this->device.setMTU(MTU_SIZE);
-	this->bluetoothServer = this->device.createServer();
+	this->server = this->device.createServer();
 
-	this->connectionListener = new BleConnectionListener(application);
+	// We always need to call it
+	application->initializeBluetoothCharacteristicsArray();
 
-	this->bluetoothServer->setCallbacks(this->connectionListener);
+	this->server->setCallbacks(new BleConnectionListener(application));
 
-	this->dataService = this->bluetoothServer->createService(BLE_SERVICE_UUID);
+	this->service = this->server->createService(BLE_SERVICE_UUID);
 
-	this->reqCharacteristic = this->dataService->createCharacteristic(
-		BLE_READ_UUID,
-		BLECharacteristic::PROPERTY_WRITE
-	);
+	unsigned int bleCharacteristicsIndex = application->getBluetoothCharacteristicsQuantity();
+	while (bleCharacteristicsIndex) {
+		--bleCharacteristicsIndex; // offset from quantity
+		BLECharacteristic * characteristic = application->getBluetoothCharacteristic(bleCharacteristicsIndex);
 
-	BluetoothLowEnergy::bleCallback = new BleMessageListener(application);
+		if (bleCharacteristicsIndex == 0) { // first element must be to receive data
+			characteristic->setCallbacks(new BleMessageListener(application));
+		}
 
-	BluetoothLowEnergy::reqCharacteristic->setCallbacks(BluetoothLowEnergy::bleCallback);
+		this->service->addCharacteristic(characteristic);
+	}
 
-	BluetoothLowEnergy::resCharacteristic = this->dataService->createCharacteristic(
-		BLE_WRITE_UUID,
-		BLECharacteristic::PROPERTY_NOTIFY
-	);
-	BluetoothLowEnergy::resCharacteristic->addDescriptor(new BLE2902());
+	this->service->start();
 
-	BluetoothLowEnergy::statusCharacteristic = this->dataService->createCharacteristic(
-		BLE_STATUS_UUID,
-		BLECharacteristic::PROPERTY_NOTIFY
-	);
-	BluetoothLowEnergy::statusCharacteristic->addDescriptor(new BLE2902());
-
-	this->dataService->start();
-
-	BluetoothLowEnergy::bluetoothServer->getAdvertising()->start();
+	this->server->getAdvertising()->start();
 
 	Serial.print("BT server created\n");
+}
+
+void BluetoothLowEnergy::checkAdvertising() {
+	const static TickType_t xDelay = 300 / portTICK_PERIOD_MS;
+
+	// disconnecting
+	if (!this->application->getBluetoothDeviceConnected() && this->application->getOldBluetoothDeviceConnected()) {
+		vTaskDelay(xDelay); // give the bluetooth stack the chance to get things ready
+		this->server->startAdvertising(); // restart advertising
+		Serial.println("restart BT advertising");
+		this->application->setOldBluetoothDeviceConnected(this->application->getBluetoothDeviceConnected());
+	}
+
+	// connecting
+	if (this->application->getBluetoothDeviceConnected() && !this->application->getOldBluetoothDeviceConnected()) {
+		// do stuff here on connecting
+		this->application->setOldBluetoothDeviceConnected(this->application->getBluetoothDeviceConnected());
+	}
+}
+
+void BluetoothLowEnergy::sendOut(BLECharacteristic * characteristic, String largeText) {
+	for (int i = 0; i < largeText.length(); i += MTU_SIZE - 3) {
+		int len = MTU_SIZE - 3;
+		if(len > largeText.length() - i) {
+			len = largeText.length() - i;
+		}
+
+		characteristic->setValue(largeText.substring(i, i + len).c_str());
+		characteristic->notify();
+	}
 }
 
 #endif // About including BLE

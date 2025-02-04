@@ -27,7 +27,15 @@ void Thread::start() {
 		this->taskCore);   //Core where the task should run
 }
 
-void Thread::stop() {
+void Thread::kill() {
 	// From within the task itself is null
 	vTaskDelete(NULL);
+}
+
+void Thread::suspend() {
+	vTaskSuspend(this->taskHandler);
+}
+
+void Thread::resume() {
+	vTaskResume(this->taskHandler);
 }

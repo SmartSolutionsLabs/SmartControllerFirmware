@@ -7,22 +7,12 @@ BleMessageListener::BleMessageListener(Application * application) : application(
 }
 
 void BleMessageListener::onWrite(BLECharacteristic * characteristic) {
-	String input(characteristic->getValue().c_str());
-	if (input.length() > 0){
-		Serial.print("\tBleListened\n\t");
-		this->application->processMessage(&input);
-	}
-}
+	unsigned int len = characteristic->getValue().length();
+	if (len > 0) {
+		char * message = new char[++len]; // plus 1 for null terminator
+		memcpy(message, characteristic->getValue().c_str(), len);
 
-void BleMessageListener::writeLargeText(BLECharacteristic * characteristic, std::string largeText) {
-	for (int i = 0; i < largeText.length(); i += MTU_SIZE - 3) {
-		int len = MTU_SIZE - 3;
-		if(len > largeText.length() - i) {
-			len = largeText.length() - i;
-		}
-
-		characteristic->setValue(largeText.substr(i, len));
-		characteristic->notify();
+		this->application->processMessage((unsigned char *) message, len, true);
 	}
 }
 
