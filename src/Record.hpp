@@ -11,8 +11,12 @@
 
 #include "Data.hpp"
 
-#define CS_PRIMARY_PIN 5 // Primary SD selector pin
-#define CS_SECONDARY_PIN 14 // Secondary SD selector pin
+//pin ESP32-S3 11  | mosi SD
+//pin ESP32-S3 12  | sck  SD
+//pin ESP32-S3 13  | miso SD
+
+#define CS_PRIMARY_PIN 10 // Primary SD selector pin
+#define CS_SECONDARY_PIN 14 // Secondary SD selector pin : controlled via MCP23017 I/O expansion
 
 /**
  * Handle SD for read and write buffers.
