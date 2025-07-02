@@ -69,22 +69,6 @@ bool Record::openForRead(const char* fileName) {
 	return true;
 }
 
-bool Record::readNext(Data& data) {
-	if (!Record::file || !*Record::file) {
-		Serial.println("No hay un archivo abierto en lectura.");
-		return false;
-	}
-
-	if (Record::file->read((uint8_t*)&data, sizeof(Data)) == sizeof(Data)) {
-		return true;
-	}
-	else {
-		Serial.println("No hay más datos o error en la lectura.");
-		Record::closeRead();
-		return false;
-	}
-}
-
 void Record::closeRead() {
 	if (Record::file) {
 		Record::file->close();

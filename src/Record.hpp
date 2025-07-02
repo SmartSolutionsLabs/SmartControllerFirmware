@@ -64,7 +64,22 @@ class Record {
 		/**
 		 * Read and fill the next Data structure.
 		 */
-		static bool readNext(Data& data);
+		template <typename Data>
+		static bool readNext(Data& data) {
+			if (!file || !*file) {
+				Serial.println("No hay un archivo abierto en lectura.");
+				return false;
+			}
+
+			if (file->read(reinterpret_cast<uint8_t*>(&data), sizeof(Data)) == sizeof(Data)) {
+				return true;
+			}
+			else {
+				Serial.println("No hay más datos o error en la lectura.");
+				closeRead();
+				return false;
+			}
+		}
 
 		/**
 		 * Close file after reading.
