@@ -14,6 +14,17 @@
 #define CS_PRIMARY_PIN 5 // Primary SD selector pin
 #define CS_SECONDARY_PIN 14 // Secondary SD selector pin
 
+/**
+ * Handle SD for read and write buffers.
+ * For methods using templates memory must be non-aligned.
+ * Therefore use:
+ * #pragma pack(push, 1)
+ * struct PackedStruct {
+ *  uint8_t a;
+ *  float b;
+ * };
+ * #pragma pack(pop)
+ */
 class Record {
 	private:
 		static File * file;
