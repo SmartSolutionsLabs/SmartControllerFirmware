@@ -54,14 +54,15 @@ class Record {
 		 * Appends data after creating a file.
 		 */
 		template <typename DataBuffer>
-		static void append(const DataBuffer& data) {
+		static bool append(const DataBuffer& data) {
 			if (file && *file) {
 				file->write(reinterpret_cast<const uint8_t*>(&data), sizeof(DataBuffer));
 				file->flush();
+				return true;
 			}
-			else {
-				Serial.println("El archivo no está abierto");
-			}
+
+			// file is not open
+			return false;
 		}
 
 		/**
