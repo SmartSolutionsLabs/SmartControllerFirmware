@@ -40,7 +40,16 @@ class Record {
 		/**
 		 * Appends data after creating a file.
 		 */
-		static void append(const DataBuffer& data);
+		template <typename DataBuffer>
+		static void append(const DataBuffer& data) {
+			if (file && *file) {
+				file->write(reinterpret_cast<const uint8_t*>(&data), sizeof(DataBuffer));
+				file->flush();
+			}
+			else {
+				Serial.println("El archivo no está abierto");
+			}
+		}
 
 		/**
 		 * Close to safely save the file.

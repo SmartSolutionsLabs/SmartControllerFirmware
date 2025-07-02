@@ -38,16 +38,6 @@ bool Record::start(const char* fileName) {
 	return true;
 }
 
-void Record::append(const DataBuffer& data) {
-	if (Record::file && *Record::file) {
-		Record::file->write((uint8_t*)&data, sizeof(DataBuffer));
-		Record::file->flush();
-	}
-	else {
-		Serial.println("El archivo no está abierto");
-	}
-}
-
 bool Record::finalize() {
 	if (Record::file && *Record::file) {
 		Record::file->close();
