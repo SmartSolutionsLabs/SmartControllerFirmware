@@ -9,8 +9,6 @@
 #include "SD.h"
 #include "SPI.h"
 
-#include "Data.hpp"
-
 //pin ESP32-S3 11  | mosi SD
 //pin ESP32-S3 12  | sck  SD
 //pin ESP32-S3 13  | miso SD
