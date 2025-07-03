@@ -22,20 +22,20 @@ int Record::init(bool primary) {
 		pinMode(CS_SECONDARY_PIN, OUTPUT);
 		digitalWrite(CS_SECONDARY_PIN, LOW);
 
-		if (!SD.begin(CS_PRIMARY_PIN)) {
-			return 1;
+		if (SD.begin(CS_PRIMARY_PIN)) {
+			return 0;
 		}
 
-		return 0;
+		return 1;
 	}
 	else {
 		pinMode(CS_PRIMARY_PIN, OUTPUT);
 		digitalWrite(CS_PRIMARY_PIN, LOW);
-		if (!SD.begin(CS_SECONDARY_PIN)) {
-			return 1;
+		if (SD.begin(CS_SECONDARY_PIN)) {
+			return 0;
 		}
 
-		return 0;
+		return 1;
 	}
 }
 
