@@ -127,3 +127,7 @@ void Record::listNextFile() {
 		Record::directory = nullptr;
 	}
 }
+
+void Record::end() {
+	SD.end();
+}

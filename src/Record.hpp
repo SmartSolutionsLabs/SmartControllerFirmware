@@ -109,6 +109,8 @@ class Record {
 		static void initList(const char* ruta);
 
 		static void listNextFile();
+
+		static void end();
 };
 
 #endif
