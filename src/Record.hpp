@@ -32,7 +32,7 @@
  */
 class Record {
 	private:
-		static MCP23017 * MCP = nullptr;
+		static MCP23017 * MCP;
 
 		static File * file;
 

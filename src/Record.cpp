@@ -1,5 +1,6 @@
 #include "Record.hpp"
 
+MCP23017* Record::MCP = nullptr;
 File* Record::file = nullptr;
 bool Record::openFile = false;
 File* Record::directory = nullptr;
