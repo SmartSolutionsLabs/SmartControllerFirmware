@@ -9,6 +9,8 @@
 #include "SD.h"
 #include "SPI.h"
 
+#include "MCP23017.h"
+
 //pin ESP32-S3 11  | mosi SD
 //pin ESP32-S3 12  | sck  SD
 //pin ESP32-S3 13  | miso SD
@@ -30,6 +32,8 @@
  */
 class Record {
 	private:
+		static MCP23017 * MCP = nullptr;
+
 		static File * file;
 
 		/**

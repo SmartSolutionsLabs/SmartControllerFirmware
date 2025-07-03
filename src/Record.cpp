@@ -5,6 +5,10 @@ bool Record::openFile = false;
 File* Record::directory = nullptr;
 
 int Record::init(bool primary) {
+	if (Record::MCP == nullptr) {
+		Record::MCP = new MCP23017(0x27);
+	}
+
 	pinMode(CS_CARD_DETECTOR_PIN, INPUT);
 	pinMode(CS_PRIMARY_PIN, OUTPUT);
 	pinMode(CS_SECONDARY_PIN, OUTPUT);
