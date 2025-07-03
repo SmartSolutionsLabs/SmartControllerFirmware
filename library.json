@@ -24,7 +24,12 @@
 	],
 	"license": "MIT",
 	"homepage": "https://www.smartsolutionslabs.com/",
-	"dependencies": [],
+	"dependencies": [
+		{
+			"name": "robtillaart/MCP23017",
+			"version": "^0.9.1"
+		}
+	],
 	"srcFilter": "+<src> +<include>",
 	"buildFlags": [],
 	"includes": ["include"],
