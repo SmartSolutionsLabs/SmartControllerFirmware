@@ -10,22 +10,33 @@ int Record::init(bool primary) {
 	}
 
 	pinMode(CS_CARD_DETECTOR_PIN, INPUT);
-	pinMode(CS_PRIMARY_PIN, OUTPUT);
-	pinMode(CS_SECONDARY_PIN, OUTPUT);
 
-	digitalWrite(CS_PRIMARY_PIN, LOW);
-	digitalWrite(CS_SECONDARY_PIN, LOW);
 
 	// 0 as exists, 1 as absense
 	if (digitalRead(CS_CARD_DETECTOR_PIN)) {
 		return -1;
 	}
 
-	if (!SD.begin(primary ? CS_PRIMARY_PIN : CS_SECONDARY_PIN)) {
-		return 1;
-	}
+	// Make operations over pins according primary or secondary
+	if (primary) {
+		pinMode(CS_SECONDARY_PIN, OUTPUT);
+		digitalWrite(CS_SECONDARY_PIN, LOW);
 
-	return 0;
+		if (!SD.begin(CS_PRIMARY_PIN)) {
+			return 1;
+		}
+
+		return 0;
+	}
+	else {
+		pinMode(CS_PRIMARY_PIN, OUTPUT);
+		digitalWrite(CS_PRIMARY_PIN, LOW);
+		if (!SD.begin(CS_SECONDARY_PIN)) {
+			return 1;
+		}
+
+		return 0;
+	}
 }
 
 bool Record::start(const char* fileName) {
