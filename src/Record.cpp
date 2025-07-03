@@ -4,19 +4,24 @@ File* Record::file = nullptr;
 bool Record::openFile = false;
 File* Record::directory = nullptr;
 
-bool Record::init(bool primary) {
+int Record::init(bool primary) {
+	pinMode(CS_CARD_DETECTOR_PIN, INPUT);
 	pinMode(CS_PRIMARY_PIN, OUTPUT);
 	pinMode(CS_SECONDARY_PIN, OUTPUT);
 
 	digitalWrite(CS_PRIMARY_PIN, LOW);
 	digitalWrite(CS_SECONDARY_PIN, LOW);
 
-	if (!SD.begin(primary ? CS_PRIMARY_PIN : CS_SECONDARY_PIN)) {
-		Serial.println("Error al inicializar la tarjeta SD");
-		return false;
+	// 0 as exists, 1 as absense
+	if (digitalRead(CS_CARD_DETECTOR_PIN)) {
+		return -1;
 	}
 
-	return true;
+	if (!SD.begin(primary ? CS_PRIMARY_PIN : CS_SECONDARY_PIN)) {
+		return 1;
+	}
+
+	return 0;
 }
 
 bool Record::start(const char* fileName) {

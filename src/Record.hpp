@@ -13,6 +13,7 @@
 //pin ESP32-S3 12  | sck  SD
 //pin ESP32-S3 13  | miso SD
 
+#define CS_CARD_DETECTOR_PIN 48
 #define CS_PRIMARY_PIN 10 // Primary SD selector pin
 #define CS_SECONDARY_PIN 14 // Secondary SD selector pin : controlled via MCP23017 I/O expansion
 
@@ -42,8 +43,9 @@ class Record {
 		/**
 		 * Initialization of physical connection.
 		 * @param primary as true or secondary as false.
+		 * @return int negative as absense, positive as error initializing and 0 as OK
 		 */
-		static bool init(bool primary = true);
+		static int init(bool primary = true);
 
 		/**
 		 * Create new file.
