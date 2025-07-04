@@ -7,21 +7,27 @@ File* Record::directory = nullptr;
 
 int Record::init(bool primary) {
 	if (Record::MCP == nullptr) {
-		Record::MCP = new MCP23017(0x27);
+		Wire.begin(5, 4);
+		Record::MCP = new MCP23017(0x20);
+		bool initialized = Record::MCP->begin(true);
+		//setPullup16(0xFF);
+		Serial.print(initialized ? "Iniciado\n" : "incapaz de arrancar\n");
+		Record::MCP->pinMode16(0b00010000); // 0 = output , 1 = input
 	}
 
 	pinMode(CS_CARD_DETECTOR_PIN, INPUT);
 
-
-	// 0 as exists, 1 as absense
-	if (digitalRead(CS_CARD_DETECTOR_PIN)) {
-		return -1;
-	}
-
 	// Make operations over pins according primary or secondary
 	if (primary) {
+		// 0 as exists, 1 as absense
+		if (digitalRead(CS_CARD_DETECTOR_PIN)) {
+			return -1;
+		}
+
 		pinMode(CS_SECONDARY_PIN, OUTPUT);
 		digitalWrite(CS_SECONDARY_PIN, LOW);
+
+		Record::MCP->write16(0x00);
 
 		if (SD.begin(CS_PRIMARY_PIN)) {
 			return 0;
@@ -30,8 +36,17 @@ int Record::init(bool primary) {
 		return 1;
 	}
 	else {
+		Serial.print("Reading 16 bits: ");
+		Serial.println(Record::MCP->read16());
+		if ((Record::MCP->read16() & 16) == 16) {
+			return -1;
+		}
+
 		pinMode(CS_PRIMARY_PIN, OUTPUT);
 		digitalWrite(CS_PRIMARY_PIN, LOW);
+
+		Record::MCP->write16(32);
+
 		if (SD.begin(CS_SECONDARY_PIN)) {
 			return 0;
 		}
