@@ -38,14 +38,14 @@ int Record::init(bool primary) {
 	else {
 		Serial.print("Reading 16 bits: ");
 		Serial.println(Record::MCP->read16());
-		if ((Record::MCP->read16() & 16) == 16) {
+		if ((Record::MCP->read16() >> 4) & 1) { // 1: absense; 0: exists
 			return -1;
 		}
 
 		pinMode(CS_PRIMARY_PIN, OUTPUT);
 		digitalWrite(CS_PRIMARY_PIN, LOW);
 
-		Record::MCP->write16(32);
+		Record::MCP->write16(0xFFFF & ~(1 << 4));
 
 		if (SD.begin(CS_SECONDARY_PIN)) {
 			return 0;
